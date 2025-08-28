@@ -125,6 +125,7 @@ plt.show()
 st.pyplot(fig)
 
 
+# Контрол со распределению заказов по разным типам транспорта
 st.subheader('Vehicle Type')
 df_filtered = day_of_week_filter(df_uber, 'veh_type')
 fig, ax = plt.subplots(figsize=(12, 9))
@@ -137,6 +138,7 @@ plt.show()
 st.pyplot(fig)
 
 
+# Контрол со статистикой по ценам бронирования разных типо транспорта
 st.subheader('Value of booking various Vehicle Type')
 df_filtered = day_of_week_filter(df_uber, 'veh_type_stats')
 stats = df_filtered.groupby('Vehicle Type')['Booking Value'].agg(['mean', 'min', 'median', 'max']).round(2)
