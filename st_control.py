@@ -26,6 +26,10 @@ data_load_state = st.text('Loading data...')
 df_uber = load_data()
 df_uber['Date'] = pd.to_datetime(df_uber['Date'])
 df_uber['Time'] = pd.to_datetime(df_uber['Time'], utc=True).dt.time
+payment_order = ['UPI', 'Cash', 'Uber Wallet', 'Credit Card', 'Debit Card']
+df_uber['Payment Method'] = pd.Categorical(df_uber['Payment Method'], categories=payment_order, ordered=True)
+vehicle_order = ['eBike', 'Go Sedan', 'Auto', 'Premier Sedan', 'Bike', 'Go Mini', 'Uber XL']
+df_uber['Vehicle Type'] = pd.Categorical(df_uber['Vehicle Type'], categories=vehicle_order, ordered=True)
 
 
 # Гистограмма распределения времени поездок
@@ -112,11 +116,45 @@ with col2:
 st.subheader('Payment Method')
 df_filtered = day_of_week_filter(df_uber, 'pay_meth')
 fig, ax = plt.subplots(figsize=(12, 9))
-sns.histplot(y=df_filtered['Payment Method'].dropna(), color='#383838')
-plt.xlabel('Count')
-plt.title('Payment Method')
+sns.histplot(y=df_filtered['Payment Method'].dropna(), color='#383838', hue_order=payment_order)
+ax.tick_params(labelsize=16)
+# plt.ylabel('Payment Method', fontsize=20)
+plt.xlabel('Count', fontsize=20)
+# plt.title('Payment Method')
 plt.show()
 st.pyplot(fig)
+
+
+st.subheader('Vehicle Type')
+df_filtered = day_of_week_filter(df_uber, 'veh_type')
+fig, ax = plt.subplots(figsize=(12, 9))
+sns.histplot(x=df_filtered['Vehicle Type'].dropna(), color='#383838', hue_order=vehicle_order)
+ax.tick_params(labelsize=16)
+# plt.xlabel('Vehicle Type', fontsize=20)
+plt.ylabel('Count', fontsize=20)
+# plt.title('Vehicle Type')
+plt.show()
+st.pyplot(fig)
+
+
+st.subheader('Value of booking various Vehicle Type')
+df_filtered = day_of_week_filter(df_uber, 'veh_type_stats')
+stats = df_filtered.groupby('Vehicle Type')['Booking Value'].agg(['mean', 'min', 'median', 'max']).round(2)
+styled_table = stats.style\
+    .background_gradient(cmap='Greys', subset=['mean', 'min', 'median', 'max'])\
+    .format(precision=2, thousands=',')
+st.dataframe(
+    styled_table,
+    column_config={
+        "mean": st.column_config.NumberColumn("Mean", format="$%.2f"),
+        "min": st.column_config.NumberColumn("Minimum", format="$%.2f"),
+        "median": st.column_config.NumberColumn("Median", format="$%.2f"),
+        "max": st.column_config.NumberColumn("Maximum", format="$%.2f")
+    },
+    height=300,
+    use_container_width=True
+)
+
 
 
 
