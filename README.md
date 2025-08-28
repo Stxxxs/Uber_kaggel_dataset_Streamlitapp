@@ -4,7 +4,7 @@ Training with data visualisation, Streamlit-services and descripive statistic.
 I'm making this project for Kaggel Data Visualization course (https://www.kaggle.com/learn/data-visualization) 
 and Stepik "Старт в Data Science!" (https://stepik.org/course/194633/syllabus).
 
-Link for Streamlit-services: ...
+Link for Streamlit-services: https://uberkaggeldatasetappapp-awrhrymcy8v4w8svfnugd7.streamlit.app/
 
 Dataset from https://www.kaggle.com/datasets/yashdevladdha/uber-ride-analytics-dashboard?select=ncr_ride_bookings.csv
 Uber Ride Analytics Dataset 2024
